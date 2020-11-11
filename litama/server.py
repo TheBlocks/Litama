@@ -13,7 +13,7 @@ from gevent import pywsgi
 from geventwebsocket.handler import WebSocketHandler
 from geventwebsocket.websocket import WebSocket
 
-from cards import ALL_BASE_CARD_NAMES
+from cards import ALL_BASE_CARD_NAMES, ALL_CARD_INFO
 from config import MONGODB_HOST
 from game import init_game, Board, apply_move, check_win_condition
 from conversions import board_to_str, str_to_board, notation_to_pos, get_card_from_name, get_cards_from_names
@@ -46,6 +46,8 @@ def game_socket(ws: WebSocket) -> None:
 
         if message == "create":
             msg_to_send = game_create()
+        elif message == "cards":
+            msg_to_send = list_cards()
         elif message.startswith("join "):
             msg_to_send = game_join(message[5:])
             if msg_to_send["messageType"] != "error":
@@ -169,6 +171,9 @@ def game_create() -> CommandResponse:
         "token": token,
         "color": color.lower()
     }
+
+def list_cards() -> CommandResponse:
+    return ALL_CARD_INFO
 
 
 @check_match_id("join")

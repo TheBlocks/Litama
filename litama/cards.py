@@ -2,6 +2,16 @@ from typing import List
 
 from structures import Card, Pos, Player
 
+def card_to_info(c: Card) -> str:
+    res = ['0'] * 25
+    for p in c.moves:
+        res[12 + p.y * 5 + p.x] = '1'
+    return {
+        "name": c.name,
+        "moves": ''.join(res),
+        "color": c.color.value
+    }
+
 # Original cards
 # From https://uploads.johnhqld.com/uploads/20180926171936/Onitama-Cards-1024x576.jpg
 
@@ -25,6 +35,8 @@ EEL = Card("eel", Player.BLUE, [Pos(1, 0), Pos(-1, 1), Pos(-1, -1)])
 ALL_BASE_CARDS: List[Card] = [RABBIT, MONKEY, BOAR, GOOSE, COBRA, CRAB, HORSE, DRAGON, ROOSTER,
                               CRANE, ELEPHANT, MANTIS, TIGER, FROG, OX, EEL]
 ALL_BASE_CARD_NAMES: List[str] = [card.name for card in ALL_BASE_CARDS]
+
+ALL_BASE_CARD_INFO: List = [card_to_info(card) for card in ALL_BASE_CARDS]
 
 # Expansion cards
 # From https://www.gadgetsville.store/wp-content/uploads/2017/12/16096-c.jpg
@@ -50,7 +62,13 @@ ALL_EXPANSION_CARDS: List[Card] = [FOX, DOG, GIRAFFE, PANDA, BEAR, KIRIN, SEA_SN
                                    PHOENIX, MOUSE, RAT, TURTLE, TANUKI, IGUANA, SABLE, OTTER]
 ALL_EXPANSION_CARD_NAMES: List[str] = [card.name for card in ALL_EXPANSION_CARDS]
 
+ALL_EXPANSION_CARD_INFO: List = [card_to_info(card) for card in ALL_EXPANSION_CARDS]
+
 # All cards combined
 
 ALL_CARDS: List[Card] = ALL_BASE_CARDS + ALL_EXPANSION_CARDS
 ALL_CARD_NAMES: List[str] = ALL_BASE_CARD_NAMES + ALL_EXPANSION_CARD_NAMES
+ALL_CARD_INFO = {
+    "base": ALL_BASE_CARD_INFO,
+    "expansion": ALL_EXPANSION_CARD_INFO
+}
